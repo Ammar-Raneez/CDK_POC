@@ -28,6 +28,7 @@ export class PipelineStack extends Stack {
     const pipeline = new Pipeline(this, `CDKPOCPipeline-${props.stageName}`, {
       pipelineName: `CDKPOCPipeline-${props.stageName}`,
       crossAccountKeys: false,
+      restartExecutionOnUpdate: true
     });
 
     // place stage outputs in artifacts
