@@ -4,7 +4,7 @@
     "module": "commonjs",
     "lib": [
       "es2018",
-      "DOM"
+      "DOM"   // added due to compilation issues of aws-sdk and aws-amplifiy
     ],
     "declaration": true,
     "strict": true,

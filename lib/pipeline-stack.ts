@@ -13,6 +13,18 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: PipelineStackProps) {
     super(scope, id, props);
 
+    // AWS CDK docs solution
+    // const pipeline = new CodePipeline(this, `CDKPOCPipeline-${props.stageName}`, {
+		// 	pipelineName: `CDKPOCPipeline-${props.stageName}`,
+		// 	synth: new CodeBuildStep(`PipelineSynth-${props.stageName}`, {
+		// 		input: CodePipelineSource.connection('Ammar-Raneez/cdk-poc', 'main', {
+    //       connectionArn: props.codeStarConnection
+    //     }),
+		// 		installCommands: ['npm install -g aws-cdk'],
+		// 		commands: ['npm ci', 'npm run build', 'npx cdk synth']
+		// 	})
+		// });
+
     const pipeline = new Pipeline(this, `CDKPOCPipeline-${props.stageName}`, {
       pipelineName: `CDKPOCPipeline-${props.stageName}`,
       crossAccountKeys: false,
@@ -48,7 +60,8 @@ export class PipelineStack extends Stack {
           actionName: `Pipeline-Build-${props.stageName}`,
           project: new PipelineProject(this, `CDKPOCBuildProject-${props.stageName}`, {
             environment: {
-              buildImage: LinuxBuildImage.STANDARD_5_0
+              buildImage: LinuxBuildImage.STANDARD_5_0,
+              privileged: true      // allow docker daemon to build this project
             },
             buildSpec: BuildSpec.fromSourceFilename('build-spec/cdk-build-spec.yml')
           })
