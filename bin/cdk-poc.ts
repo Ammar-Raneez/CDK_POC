@@ -7,31 +7,31 @@ import { AuctionStack } from '../lib/auction-stack';
 import { PipelineStack } from '../lib/pipeline-stack';
 
 const app = new cdk.App();
-new AuthStack(app, 'CdkPocAuthStack', {
+const authStack = new AuthStack(app, 'CdkPocAuthStack', {
   stackName: 'CdkPocAuthStack',
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com'
 });
 
-new MailerStack(app, 'CdkPocMailerStack', {
+const mailerStack = new MailerStack(app, 'CdkPocMailerStack', {
   stackName: 'CdkPocMailerStack',
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com'
 });
 
-new HelloStack(app, 'CdkPocHelloStack', {
+const helloStack = new HelloStack(app, 'CdkPocHelloStack', {
   stackName: 'CdkPocHelloStack',
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com'
 });
 
-new AuctionStack(app, 'CdkPocAuctionStack', {
+const auctionStack = new AuctionStack(app, 'CdkPocAuctionStack', {
   stackName: 'CdkPocAuctionStack',
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com'
 });
 
-new PipelineStack(app, 'CdkPocPipelineStack', {
+const pipelineStack = new PipelineStack(app, 'CdkPocPipelineStack', {
   stackName: 'CdkPocPipelineStack',
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com',
@@ -40,4 +40,24 @@ new PipelineStack(app, 'CdkPocPipelineStack', {
     account: '634590378560',
     region: 'us-east-1'
   }
+});
+pipelineStack.addServiceStack(authStack, 'Auth', {
+  stackName: 'CdkPocAuthStack',
+  stageName: 'dev',
+  emailSender: 'ammarraneez@gmail.com'
+});
+pipelineStack.addServiceStack(mailerStack, 'Mailer', {
+  stackName: 'CdkPocMailerStack',
+  stageName: 'dev',
+  emailSender: 'ammarraneez@gmail.com'
+});
+pipelineStack.addServiceStack(helloStack, 'Hello', {
+  stackName: 'CdkPocHelloStack',
+  stageName: 'dev',
+  emailSender: 'ammarraneez@gmail.com'
+});
+pipelineStack.addServiceStack(auctionStack, 'Auction', {
+  stackName: 'CdkPocAuctionStack',
+  stageName: 'dev',
+  emailSender: 'ammarraneez@gmail.com'
 });

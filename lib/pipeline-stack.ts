@@ -10,6 +10,9 @@ interface PipelineStackProps extends POCStackProps {
 }
 
 export class PipelineStack extends Stack {
+  private readonly pipeline: Pipeline;
+  private readonly buildOutput: Artifact;
+
   constructor(scope: Construct, id: string, props: PipelineStackProps) {
     super(scope, id, props);
 
@@ -25,7 +28,7 @@ export class PipelineStack extends Stack {
 		// 	})
 		// });
 
-    const pipeline = new Pipeline(this, `CDKPOCPipeline-${props.stageName}`, {
+    this.pipeline = new Pipeline(this, `CDKPOCPipeline-${props.stageName}`, {
       pipelineName: `CDKPOCPipeline-${props.stageName}`,
       crossAccountKeys: false,
       restartExecutionOnUpdate: true
@@ -35,7 +38,7 @@ export class PipelineStack extends Stack {
     const sourceOutput = new Artifact(`source-output-${props.stageName}`);
 
     // connect to github repo
-    pipeline.addStage({
+    this.pipeline.addStage({
       stageName: `source-${props.stageName}`,
       actions: [
         new GitHubSourceAction({
@@ -49,15 +52,15 @@ export class PipelineStack extends Stack {
       ]
     });
 
-    const buildOutput = new Artifact(`build-output-${props.stageName}`);
+    this.buildOutput = new Artifact(`build-output-${props.stageName}`);
 
     // build process
-    pipeline.addStage({
+    this.pipeline.addStage({
       stageName: `build-${props.stageName}`,
       actions: [
         new CodeBuildAction({
           input: sourceOutput,
-          outputs: [buildOutput],
+          outputs: [this.buildOutput],
           actionName: `Pipeline-Build-${props.stageName}`,
           project: new PipelineProject(this, `CDKPOCBuildProject-${props.stageName}`, {
             environment: {
@@ -71,13 +74,27 @@ export class PipelineStack extends Stack {
     });
 
     // update pipeline automatically
-    pipeline.addStage({
+    this.pipeline.addStage({
       stageName: `update-${props.stageName}`,
       actions: [
         new CloudFormationCreateUpdateStackAction({
           actionName: `Pipeline-Update-${props.stageName}`,
           stackName: 'CdkPocPipelineStack',
-          templatePath: buildOutput.atPath('CdkPocPipelineStack.template.json'),
+          templatePath: this.buildOutput.atPath('CdkPocPipelineStack.template.json'),
+          adminPermissions: true
+        })
+      ]
+    })
+  }
+
+  public addServiceStack(stack: Stack, stageName: string, props: POCStackProps) {
+    this.pipeline.addStage({
+      stageName: `${stageName.toLowerCase()}-${props.stageName}`,
+      actions: [
+        new CloudFormationCreateUpdateStackAction({
+          actionName: `Service-${stageName}-${props.stageName}`,
+          stackName: stack.stackName,
+          templatePath: this.buildOutput.atPath(`${stack.stackName}.template.json`),
           adminPermissions: true
         })
       ]
