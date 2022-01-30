@@ -34,5 +34,10 @@ new AuctionStack(app, 'CdkPocAuctionStack', {
 new PipelineStack(app, 'CdkPocPipelineStack', {
   stackName: 'CdkPocPipelineStack',
   stageName: 'dev',
-  emailSender: 'ammarraneez@gmail.com'
+  emailSender: 'ammarraneez@gmail.com',
+  codeStarConnection: 'e95f7f83-2072-419f-bb2b-c8a4cd3aae61',
+  env: {
+    account: '634590378560',
+    region: 'us-east-1'
+  }
 });
