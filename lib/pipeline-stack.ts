@@ -1,7 +1,7 @@
 import { SecretValue, Stack } from 'aws-cdk-lib';
 import { BuildSpec, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
-import { CodeBuildAction, GitHubSourceAction } from 'aws-cdk-lib/aws-codepipeline-actions';
+import { CloudFormationCreateUpdateStackAction, CodeBuildAction, GitHubSourceAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Construct } from 'constructs';
 import { POCStackProps } from '../resources/lib/poc-stack.model';
 
@@ -65,6 +65,19 @@ export class PipelineStack extends Stack {
             },
             buildSpec: BuildSpec.fromSourceFilename('build-spec/cdk-build-spec.yml')
           })
+        })
+      ]
+    });
+
+    // update pipeline automatically
+    pipeline.addStage({
+      stageName: `update-${props.stageName}`,
+      actions: [
+        new CloudFormationCreateUpdateStackAction({
+          actionName: `Pipeline-Update-${props.stageName}`,
+          stackName: 'CdkPocPipelineStack',
+          templatePath: buildOutput.atPath('CdkPocPipelineStack.template.json'),
+          adminPermissions: true
         })
       ]
     })
