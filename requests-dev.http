@@ -1,0 +1,61 @@
+@helloDevEndpoint = https://sffvlkfob4.execute-api.us-east-1.amazonaws.com/dev/
+@auctionDevEndpoint = https://kpcb468u41.execute-api.us-east-1.amazonaws.com/dev/
+@mailerDevEndpoint = https://7ihhleduja.execute-api.us-east-1.amazonaws.com/dev/
+@token = eyJraWQiOiJzaWhTdUZmbHo5VXNNdE1FaTd6OXhrWFpuSE9Pem04eXRKSmlaTGVRdDhnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIyYjUyZTA5MS01YWUzLTRhMDMtOGZiNS0wNzUwZWU0Y2FjYmMiLCJjb2duaXRvOmdyb3VwcyI6WyJBdWN0aW9uVVBBZG1pbnNHcm91cC1kZXYiXSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX1I0bmV2OGxZTyIsImNvZ25pdG86dXNlcm5hbWUiOiJhbW1hciIsIm9yaWdpbl9qdGkiOiI0ZjkzMWE5ZS1iYWI2LTRiNTEtYWE0ZC05YzNmMjVkZGIxNmQiLCJhdWQiOiIydjI2N3AzOHNybnUyMWVwNHI5cHAzOTgyYyIsImV2ZW50X2lkIjoiYTNlMDJmM2QtOTliMC00NmM2LWJjODQtZDA1ODU0NWNmMTkyIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2NDM1NDEwMDcsImV4cCI6MTY0MzU0NDYwNywiaWF0IjoxNjQzNTQxMDA3LCJqdGkiOiJjOGFlODM4Ni1iMzI0LTQ3NTctYTk1OC0zYjk5YjFlY2MwZWQiLCJlbWFpbCI6ImFtbWFyQGdtYWlsLmNvbSJ9.UNFmxerQ7G-GGasOml0ly3VDlAFpgwng0dCatuDFCpzsZ0CJDTAyyzeOWEr6fN5EnXH1nl5SYBF6yfO2WvTfmJ8G_ZxyuZqsh67Nvxmh8o85XqS6eCtitIWjEBD4tTkc9AQbLeGQ3nOXUX5A66ajsFuidGzzakJwzGD-ZgO7Gdg4s5ipobKTebJWlK59fo7GiPqTyK-nkXzu9si80PgHJ5AdDiybRUjVVqgE1MXdchxkFJ8tbhaw4v5I6yNU263FachqoIWkpjP6fNYg8HLQvnT4y3-8I_cxY4aeLcgRnh1y0_pTUWxB3m6ejaPlNaVeiMPKJEgj3FpaGoBVwxlrLQ
+
+### Hello
+GET {{ helloDevEndpoint }}/hello
+Authorization: {{ token }}
+###
+GET {{ helloDevEndpoint }}/hello-ts
+Authorization: {{ token }}
+
+
+
+### Auction
+GET {{ auctionDevEndpoint }}/auction
+###
+GET {{ auctionDevEndpoint }}/auction?auctionId=oe11zlgobl
+###
+GET {{ auctionDevEndpoint }}/auction?status=OPEN
+###
+POST {{ auctionDevEndpoint }}/auction
+Content-Type: application/json
+Authorization: {{ token }}
+
+{
+  "title": "Auction Item 4",
+  "seller": "ammarraneez1@gmail.com"
+}
+###
+PUT {{ auctionDevEndpoint }}/auction?auctionId=oe11zlgobl
+Content-Type: application/json
+Authorization: {{ token }}
+
+{
+  "title": "Auction Item Updated"
+}
+###
+PATCH {{ auctionDevEndpoint }}/auction?auctionId=1sg76o0fziy
+Content-Type: application/json
+
+{
+  "amount": 40.00,
+  "bidder": "w1761196@my.westminster.ac.uk"
+}
+###
+Delete {{ auctionDevEndpoint }}/auction?auctionId=jfq4r92kj3
+Authorization: {{ token }}
+
+
+
+### Mailer
+POST {{ mailerDevEndpoint }}/mail
+Content-Type: application/json
+
+[
+  {
+    "bidder": "ammar.2019163@iit.ac.lk",
+    "title": "Auction Item 1"
+  }
+]
