@@ -51,11 +51,11 @@ pipelineStack.addServiceStack(mailerStack, 'Mailer', {
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com'
 });
-// pipelineStack.addServiceStack(helloStack, 'Hello', {
-//   stackName: 'CdkPocHelloStack',
-//   stageName: 'dev',
-//   emailSender: 'ammarraneez@gmail.com'
-// });
+pipelineStack.addServiceStack(helloStack, 'Hello', {
+  stackName: 'CdkPocHelloStack',
+  stageName: 'dev',
+  emailSender: 'ammarraneez@gmail.com'
+});
 pipelineStack.addServiceStack(auctionStack, 'Auction', {
   stackName: 'CdkPocAuctionStack',
   stageName: 'dev',

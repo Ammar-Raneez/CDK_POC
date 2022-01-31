@@ -4,7 +4,6 @@ import {
   MethodOptions,
   RestApi
 } from 'aws-cdk-lib/aws-apigateway';
-import { Code, Runtime, Function as LbFunction } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import { join } from 'path';
@@ -17,17 +16,13 @@ interface HelloProps extends POCStackProps {
 
 export class Hello {
   private api: RestApi;
-  private helloLambda: LbFunction;
+  // private helloLambda: LbFunction;
   private helloLambdaTypeScript: NodejsFunction;
-  private helloLambdaIntegration: LambdaIntegration;
+  // private helloLambdaIntegration: LambdaIntegration;
   private helloLambdaTSIntegration: LambdaIntegration;
 
   public constructor(private scope: Construct, private props: HelloProps) {
     this.initialize();
-  }
-
-  public getHelloLambda(): LbFunction {
-    return this.helloLambda;
   }
 
   private initialize() {
@@ -49,12 +44,12 @@ export class Hello {
   }
 
   private createLambdas() {
-    this.helloLambda = new LbFunction(this.scope, `helloLambda-${this.props.stageName}`, {
-      runtime: Runtime.NODEJS_14_X,
-      code: Code.fromAsset(join(__dirname, '..', '..', 'resources', 'hello')),
-      handler: 'hello.main',
-      functionName: `auction-hello-${this.props.stageName}`
-    });
+    // this.helloLambda = new LbFunction(this.scope, `helloLambda-${this.props.stageName}`, {
+    //   runtime: Runtime.NODEJS_14_X,
+    //   code: Code.fromAsset(join(__dirname, '..', '..', 'resources', 'hello')),
+    //   handler: 'hello.main',
+    //   functionName: `auction-hello-${this.props.stageName}`
+    // });
     this.helloLambdaTypeScript = new NodejsFunction(this.scope, `helloLambdaTypeScript-${this.props.stageName}`, {
       entry: join(__dirname, '..', '..', 'resources', 'hello', 'hello.ts'),
       handler: 'handler',
@@ -63,14 +58,14 @@ export class Hello {
   }
 
   private createLambdaIntegrations() {
-    this.helloLambdaIntegration = new LambdaIntegration(this.helloLambda);
+    // this.helloLambdaIntegration = new LambdaIntegration(this.helloLambda);
     this.helloLambdaTSIntegration = new LambdaIntegration(this.helloLambdaTypeScript);
   }
 
   private createResources() {
-    const helloLambdaResource = this.api.root.addResource('hello');
+    // const helloLambdaResource = this.api.root.addResource('hello');
     const helloLambdaTSResource = this.api.root.addResource('hello-ts');
-    helloLambdaResource.addMethod('GET', this.helloLambdaIntegration, this.props.authorizerOptions);
+    // helloLambdaResource.addMethod('GET', this.helloLambdaIntegration, this.props.authorizerOptions);
     helloLambdaTSResource.addMethod('GET', this.helloLambdaTSIntegration, this.props.authorizerOptions);
   }
 }
