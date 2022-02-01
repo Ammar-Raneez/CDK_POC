@@ -15,10 +15,6 @@ export class Mailer {
     this.initialize();
   }
 
-  public getMailerLambda(): NodejsFunction {
-    return this.mailerLambda;
-  }
-
   private initialize() {
     this.createRestAPI();
     this.createLambdas();
@@ -62,7 +58,9 @@ export class Mailer {
           'ses:SendTemplatedEmail',
         ],
         resources: [
-          `arn:aws:ses:${Stack.of(this.scope).region}:${Stack.of(this.scope).account}:identity/${this.props.emailSender}`,
+          // for ses not in sanboxed environment
+          // `arn:aws:ses:${Stack.of(this.scope).region}:${Stack.of(this.scope).account}:identity/${this.props.emailSender}`,
+          `arn:aws:ses:${Stack.of(this.scope).region}:${Stack.of(this.scope).account}:identity/*`,
         ],
       }),
     );

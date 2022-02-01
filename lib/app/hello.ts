@@ -4,6 +4,11 @@ import {
   MethodOptions,
   RestApi
 } from 'aws-cdk-lib/aws-apigateway';
+import {
+  LambdaDeploymentConfig,
+  LambdaDeploymentGroup
+} from 'aws-cdk-lib/aws-codedeploy';
+import { Alias } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import { join } from 'path';
@@ -16,9 +21,8 @@ interface HelloProps extends POCStackProps {
 
 export class Hello {
   private api: RestApi;
-  // private helloLambda: LbFunction;
   private helloLambdaTypeScript: NodejsFunction;
-  // private helloLambdaIntegration: LambdaIntegration;
+  private helloLambdaTypeScriptAlias: Alias;
   private helloLambdaTSIntegration: LambdaIntegration;
 
   public constructor(private scope: Construct, private props: HelloProps) {
@@ -44,28 +48,29 @@ export class Hello {
   }
 
   private createLambdas() {
-    // this.helloLambda = new LbFunction(this.scope, `helloLambda-${this.props.stageName}`, {
-    //   runtime: Runtime.NODEJS_14_X,
-    //   code: Code.fromAsset(join(__dirname, '..', '..', 'resources', 'hello')),
-    //   handler: 'hello.main',
-    //   functionName: `auction-hello-${this.props.stageName}`
-    // });
     this.helloLambdaTypeScript = new NodejsFunction(this.scope, `helloLambdaTypeScript-${this.props.stageName}`, {
       entry: join(__dirname, '..', '..', 'resources', 'hello', 'hello.ts'),
       handler: 'handler',
       functionName: `auction-hello-ts-${this.props.stageName}`
     });
+
+    this.helloLambdaTypeScriptAlias = new Alias(this.scope, `helloLambdaTypeScriptAlias-${this.props.stageName}`, {
+      version: this.helloLambdaTypeScript.currentVersion,
+      aliasName: `helloLambdaTypeScriptAlias-${this.props.stageName}`
+    });
   }
 
   private createLambdaIntegrations() {
-    // this.helloLambdaIntegration = new LambdaIntegration(this.helloLambda);
-    this.helloLambdaTSIntegration = new LambdaIntegration(this.helloLambdaTypeScript);
+    this.helloLambdaTSIntegration = new LambdaIntegration(this.helloLambdaTypeScriptAlias);
+    new LambdaDeploymentGroup(this.scope, `helloLambdaTypeScriptDG-${this.props.stageName}`, {
+      alias: this.helloLambdaTypeScriptAlias,
+      deploymentGroupName: `helloLambdaTypeScriptDG-${this.props.stageName}`,
+      deploymentConfig: LambdaDeploymentConfig.CANARY_10PERCENT_5MINUTES
+    });
   }
 
   private createResources() {
-    // const helloLambdaResource = this.api.root.addResource('hello');
     const helloLambdaTSResource = this.api.root.addResource('hello-ts');
-    // helloLambdaResource.addMethod('GET', this.helloLambdaIntegration, this.props.authorizerOptions);
     helloLambdaTSResource.addMethod('GET', this.helloLambdaTSIntegration, this.props.authorizerOptions);
   }
 }
