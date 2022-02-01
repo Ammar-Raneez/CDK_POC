@@ -1,9 +1,11 @@
+import { Duration } from 'aws-cdk-lib';
 import {
   CognitoUserPoolsAuthorizer,
   LambdaIntegration,
   MethodOptions,
   RestApi
 } from 'aws-cdk-lib/aws-apigateway';
+import { Statistic, TreatMissingData } from 'aws-cdk-lib/aws-cloudwatch';
 import {
   LambdaDeploymentConfig,
   LambdaDeploymentGroup
@@ -52,6 +54,8 @@ export class Hello {
       entry: join(__dirname, '..', '..', 'resources', 'hello', 'hello.ts'),
       handler: 'handler',
       functionName: `auction-hello-ts-${this.props.stageName}`,
+
+      // Intentionally added to trigger hello stack build
       description: `Generated on ${new Date().toISOString()}`
     });
 
@@ -66,7 +70,29 @@ export class Hello {
     new LambdaDeploymentGroup(this.scope, `helloLambdaTypeScriptDG-${this.props.stageName}`, {
       alias: this.helloLambdaTypeScriptAlias,
       deploymentGroupName: `helloLambdaTypeScriptDG-${this.props.stageName}`,
-      deploymentConfig: LambdaDeploymentConfig.CANARY_10PERCENT_5MINUTES
+      deploymentConfig: LambdaDeploymentConfig.CANARY_10PERCENT_5MINUTES,
+
+      // rollback all traffic to old version on specified alarms
+      autoRollback: {
+        deploymentInAlarm: true
+      },
+      alarms: [
+        this.api.metricServerError()
+          .with({
+            // wait a minute before triggering alarm
+            period: Duration.minutes(1),
+            // alarming on the sum of errors/max num errors/avg num of errors
+            // (Ex: 2 errors over 1 minute)
+            statistic: Statistic.SUM
+          })
+          .createAlarm(this.scope, `ServiceErrorAlarm-${this.props.stageName}`, {
+            threshold: 1,   // fire alarm on 1 error itself
+            alarmDescription: 'Hello Service is experiencing an error',
+            alarmName: `ServiceErrorAlarm-${this.props.stageName}`,
+            evaluationPeriods: 1,  // trigger on a single datapoint breaching the threshold
+            treatMissingData: TreatMissingData.NOT_BREACHING    // treat everything as fine if there's data
+          })
+      ]
     });
   }
 
