@@ -61,16 +61,16 @@ pipelineStack.addServiceStack(authStack, 'Auth', {
     region: 'eu-west-1'
   }
 });
-pipelineStack.addServiceStack(mailerStack, 'Mailer', {
-  stackName: 'CdkPocMailerStack',
+pipelineStack.addServiceStack(helloStack, 'Hello', {
+  stackName: 'CdkPocHelloStack',
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com',
   env: {
     region: 'eu-west-1'
   }
 });
-pipelineStack.addServiceStack(helloStack, 'Hello', {
-  stackName: 'CdkPocHelloStack',
+pipelineStack.addServiceStack(mailerStack, 'Mailer', {
+  stackName: 'CdkPocMailerStack',
   stageName: 'dev',
   emailSender: 'ammarraneez@gmail.com',
   env: {
