@@ -1,5 +1,4 @@
 import { Auction } from './auction.model';
-import { ContactDetail } from './contact-detail.model';
 
 export class MissingFieldError extends Error { }
 

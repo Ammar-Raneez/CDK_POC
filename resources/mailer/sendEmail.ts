@@ -48,7 +48,7 @@ export async function handler(
 }
 
 async function sendEmail({ bidder, title, seller }: ContactDetail) {
-  const ses = new AWS.SES({ region: 'us-east-1' });
+  const ses = new AWS.SES({ region: 'eu-west-1' });
   await ses.sendEmail(sendEmailParams({ bidder, title, seller })).promise();
 }
 
