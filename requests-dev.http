@@ -1,11 +1,11 @@
-@helloDevEndpoint = https://sffvlkfob4.execute-api.us-east-1.amazonaws.com/dev/
-@auctionDevEndpoint = https://kpcb468u41.execute-api.us-east-1.amazonaws.com/dev/
-@mailerDevEndpoint = https://7ihhleduja.execute-api.us-east-1.amazonaws.com/dev/
-@token = eyJraWQiOiJzaWhTdUZmbHo5VXNNdE1FaTd6OXhrWFpuSE9Pem04eXRKSmlaTGVRdDhnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIyYjUyZTA5MS01YWUzLTRhMDMtOGZiNS0wNzUwZWU0Y2FjYmMiLCJjb2duaXRvOmdyb3VwcyI6WyJBdWN0aW9uVVBBZG1pbnNHcm91cC1kZXYiXSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX1I0bmV2OGxZTyIsImNvZ25pdG86dXNlcm5hbWUiOiJhbW1hciIsIm9yaWdpbl9qdGkiOiI0ZjkzMWE5ZS1iYWI2LTRiNTEtYWE0ZC05YzNmMjVkZGIxNmQiLCJhdWQiOiIydjI2N3AzOHNybnUyMWVwNHI5cHAzOTgyYyIsImV2ZW50X2lkIjoiYTNlMDJmM2QtOTliMC00NmM2LWJjODQtZDA1ODU0NWNmMTkyIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2NDM1NDEwMDcsImV4cCI6MTY0MzU0NDYwNywiaWF0IjoxNjQzNTQxMDA3LCJqdGkiOiJjOGFlODM4Ni1iMzI0LTQ3NTctYTk1OC0zYjk5YjFlY2MwZWQiLCJlbWFpbCI6ImFtbWFyQGdtYWlsLmNvbSJ9.UNFmxerQ7G-GGasOml0ly3VDlAFpgwng0dCatuDFCpzsZ0CJDTAyyzeOWEr6fN5EnXH1nl5SYBF6yfO2WvTfmJ8G_ZxyuZqsh67Nvxmh8o85XqS6eCtitIWjEBD4tTkc9AQbLeGQ3nOXUX5A66ajsFuidGzzakJwzGD-ZgO7Gdg4s5ipobKTebJWlK59fo7GiPqTyK-nkXzu9si80PgHJ5AdDiybRUjVVqgE1MXdchxkFJ8tbhaw4v5I6yNU263FachqoIWkpjP6fNYg8HLQvnT4y3-8I_cxY4aeLcgRnh1y0_pTUWxB3m6ejaPlNaVeiMPKJEgj3FpaGoBVwxlrLQ
+@helloDevEndpoint = https://fwa5my250m.execute-api.eu-west-1.amazonaws.com/dev/
+@auctionDevEndpoint = https://zip3w7x0xb.execute-api.eu-west-1.amazonaws.com/dev/
+@mailerDevEndpoint = https://arni8zdtqi.execute-api.eu-west-1.amazonaws.com/dev/
+@token = eyJraWQiOiJtK2FucFFNbzlFZ1I1RHhGTXdHaFYremdWemdEeEVkVDZ2NUNJSmlUQUhvPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkOTQwMDljNC0wODA4LTQ5MmItODYzMS1iZGUzMGFiOTVlNGEiLCJjb2duaXRvOmdyb3VwcyI6WyJBdWN0aW9uVVBBZG1pbnNHcm91cC1kZXYiXSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS13ZXN0LTEuYW1hem9uYXdzLmNvbVwvZXUtd2VzdC0xX1A1VzRJVkdEdCIsImNvZ25pdG86dXNlcm5hbWUiOiJhbW1hciIsIm9yaWdpbl9qdGkiOiJiZjQ3YzRkNS03OTdiLTRmZDYtYTNhZi1jMjVhNGU4NDU4OWUiLCJhdWQiOiI1b3NyM2IwbmVkNzFkNDU2NjlpaHQ4ZmdxbyIsImV2ZW50X2lkIjoiMDdiZDNhNmUtN2YwOC00MjUxLTk1ODktNGFkYjEwOTU5OWMwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2NDM2ODcxMzIsImV4cCI6MTY0MzY5MDczMiwiaWF0IjoxNjQzNjg3MTMyLCJqdGkiOiJhMTA3YzRkYi05ZjdmLTQyYmItYWU5ZS1mMzRlMGE4NGZkZTMiLCJlbWFpbCI6ImFtbWFyQGdtYWlsLmNvbSJ9.c6R0AQ-xs5yxiAsWTlwh_B7i1TJuIqKF8jmj9KVONT8Qnf63D5eCdI-soPJDQxxs93sh3OfueukVwXMM1XQORVLCpPJdut2ePUNsQOBo7tip6wj5iKFewb1of2a-NiAhpSlKsAvC0Ojs3wEhxx7OqOtXR6U92_3CWn73Yw2_HSQd4igqXRjNrBjts0PywJgZmgKIOTYY870CaYNlgHhV6O4hUKvxeQaheHaVx2jV8urZ9HQitnbOe5uoUiKvlmjyNqFnuWoE1IyfBjLybhIAmW7UlWSd3XPipytCorNS4nG3P-Ttjo-7vC3kd_3_qNLRLemN_Ntv8Qc-5CLC2U11aw
 
 ### Hello
-GET {{ helloDevEndpoint }}/hello
-Authorization: {{ token }}
+# GET {{ helloDevEndpoint }}/hello
+# Authorization: {{ token }}
 ###
 GET {{ helloDevEndpoint }}/hello-ts
 Authorization: {{ token }}
@@ -15,7 +15,7 @@ Authorization: {{ token }}
 ### Auction
 GET {{ auctionDevEndpoint }}/auction
 ###
-GET {{ auctionDevEndpoint }}/auction?auctionId=oe11zlgobl
+GET {{ auctionDevEndpoint }}/auction?auctionId=9wx413bobb9
 ###
 GET {{ auctionDevEndpoint }}/auction?status=OPEN
 ###
@@ -28,7 +28,7 @@ Authorization: {{ token }}
   "seller": "ammarraneez1@gmail.com"
 }
 ###
-PUT {{ auctionDevEndpoint }}/auction?auctionId=oe11zlgobl
+PUT {{ auctionDevEndpoint }}/auction?auctionId=9wx413bobb9
 Content-Type: application/json
 Authorization: {{ token }}
 
@@ -36,12 +36,12 @@ Authorization: {{ token }}
   "title": "Auction Item Updated"
 }
 ###
-PATCH {{ auctionDevEndpoint }}/auction?auctionId=1sg76o0fziy
+PATCH {{ auctionDevEndpoint }}/auction?auctionId=2sm6ckz0pg9
 Content-Type: application/json
 
 {
   "amount": 40.00,
-  "bidder": "w1761196@my.westminster.ac.uk"
+  "bidder": "ammar.2019163@iit.ac.lk"
 }
 ###
 Delete {{ auctionDevEndpoint }}/auction?auctionId=jfq4r92kj3
