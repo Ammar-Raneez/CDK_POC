@@ -51,7 +51,8 @@ export class Hello {
     this.helloLambdaTypeScript = new NodejsFunction(this.scope, `helloLambdaTypeScript-${this.props.stageName}`, {
       entry: join(__dirname, '..', '..', 'resources', 'hello', 'hello.ts'),
       handler: 'handler',
-      functionName: `auction-hello-ts-${this.props.stageName}`
+      functionName: `auction-hello-ts-${this.props.stageName}`,
+      description: `Generated on ${new Date().toISOString()}`
     });
 
     this.helloLambdaTypeScriptAlias = new Alias(this.scope, `helloLambdaTypeScriptAlias-${this.props.stageName}`, {
