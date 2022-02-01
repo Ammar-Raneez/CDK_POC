@@ -2,9 +2,9 @@ import { CognitoUser } from '@aws-amplify/auth';
 import Amplify, { Auth } from 'aws-amplify';
 
 export const config = {
-  REGION: 'us-east-1',
-  USER_POOL_ID: 'us-east-1_R4nev8lYO',
-  APP_CLIENT_ID: '2v267p38srnu21ep4r9pp3982c',
+  REGION: 'eu-west-1',
+  USER_POOL_ID: 'eu-west-1_P5W4IVGDt',
+  APP_CLIENT_ID: '5osr3b0ned71d45669iht8fgqo',
   TEST_USERNAME: 'ammar',
   TEST_PASSWORD: '9ReduslsDkhb_=5y'
 }
