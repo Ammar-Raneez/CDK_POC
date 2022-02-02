@@ -79,18 +79,15 @@ export class Hello {
       alarms: [
         this.api.metricServerError()
           .with({
-            // wait a minute before triggering alarm
             period: Duration.minutes(1),
-            // alarming on the sum of errors/max num errors/avg num of errors
-            // (Ex: 2 errors over 1 minute)
             statistic: Statistic.SUM
           })
           .createAlarm(this.scope, `ServiceErrorAlarm-${this.props.stageName}`, {
-            threshold: 1,   // fire alarm on 1 error itself
+            threshold: 1,
             alarmDescription: 'Hello Service is experiencing an error',
             alarmName: `ServiceErrorAlarm-${this.props.stageName}`,
-            evaluationPeriods: 1,  // trigger on a single datapoint breaching the threshold
-            treatMissingData: TreatMissingData.NOT_BREACHING    // treat everything as fine if there's data
+            evaluationPeriods: 1,
+            treatMissingData: TreatMissingData.NOT_BREACHING
           })
       ]
     });

@@ -16,18 +16,6 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: PipelineStackProps) {
     super(scope, id, props);
 
-    // AWS CDK docs solution
-    // const pipeline = new CodePipeline(this, `CDKPOCPipeline-${props.stageName}`, {
-		// 	pipelineName: `CDKPOCPipeline-${props.stageName}`,
-		// 	synth: new CodeBuildStep(`PipelineSynth-${props.stageName}`, {
-		// 		input: CodePipelineSource.connection('Ammar-Raneez/cdk-poc', 'main', {
-    //       connectionArn: props.codeStarConnection
-    //     }),
-		// 		installCommands: ['npm install -g aws-cdk'],
-		// 		commands: ['npm ci', 'npm run build', 'npx cdk synth']
-		// 	})
-		// });
-
     this.pipeline = new Pipeline(this, `CDKPOCPipeline-${props.stageName}`, {
       pipelineName: `CDKPOCPipeline-${props.stageName}`,
       crossAccountKeys: false,

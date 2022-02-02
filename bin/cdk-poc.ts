@@ -43,6 +43,8 @@ const auctionStack = new AuctionStack(app, 'CdkPocAuctionStack', {
   }
 });
 
+
+// Pipeline
 const pipelineStack = new PipelineStack(app, 'CdkPocPipelineStack', {
   stackName: 'CdkPocPipelineStack',
   stageName: 'dev',
