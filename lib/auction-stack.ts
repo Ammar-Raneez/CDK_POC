@@ -29,7 +29,7 @@ export class AuctionStack extends Stack {
     };
 
     const auctionBucket = new s3.Bucket(this, `AuctionBucket-${props.stageName}`, {
-      bucketName: `AuctionBucket-${props.stageName}`,
+      bucketName: `auction-bucket-${props.stageName}`,
       accessControl: s3.BucketAccessControl.PUBLIC_READ,
       publicReadAccess: true,
     });
