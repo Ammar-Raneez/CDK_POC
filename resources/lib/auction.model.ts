@@ -5,6 +5,7 @@ export interface Auction {
   status: string;
   amount: number;
   bidder: string;
+  image: string;
   currentTime: any;
   endTime: any;
 }

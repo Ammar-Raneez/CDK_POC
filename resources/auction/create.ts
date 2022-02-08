@@ -1,4 +1,4 @@
-import { DynamoDB } from 'aws-sdk';
+import { DynamoDB, S3 } from 'aws-sdk';
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -9,7 +9,9 @@ import { MissingFieldError, validateCreateAuction } from '../lib/validator';
 import { AuctionStatus } from '../lib/auction-status.enum';
 
 const TABLE_NAME = process.env.TABLE_NAME;
+const BUCKET_NAME = process.env.BUCKET_NAME!;
 const dbClient = new DynamoDB.DocumentClient();
+const s3 = new S3();
 
 async function handler(
   event: APIGatewayProxyEvent,
@@ -29,6 +31,7 @@ async function handler(
 
   try {
     const item = getEventBody(event);
+    console.log('Item: ', JSON.stringify(JSON.parse(item)));
     const currentTime = new Date();
     const endTime = new Date();
     endTime.setHours(currentTime.getHours() + 1);
@@ -38,6 +41,10 @@ async function handler(
     item.currentTime = currentTime.toISOString();
     item.endTime = endTime.toISOString();
     item.amount = 0;
+
+    const imageBuffer =  item.image.replace(/^data:image\/\w+;base64,/, '');
+    const imageRes = await uploadImageToS3(item.auctionId + '.jpg', imageBuffer);
+    item.image = imageRes.Location;
     validateCreateAuction(item);
 
     await dbClient
@@ -62,3 +69,15 @@ async function handler(
 }
 
 export { handler };
+
+const uploadImageToS3 = async (key: string, body: S3.Body) => {
+  const result = await s3.upload({
+    Bucket: BUCKET_NAME,
+    Key: key,
+    Body: body,
+    ContentEncoding: 'base64',
+    ContentType: 'image/jpeg',
+  }).promise();
+
+  return result;
+}

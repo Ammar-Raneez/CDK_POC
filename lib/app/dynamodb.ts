@@ -18,6 +18,9 @@ interface TableProps {
   patchLambdaPath?: string;
   deleteLambdaPath?: string;
   secondaryIndexes?: GSI[];
+  environment?: {
+    s3: string;
+  };
 }
 
 export class DynamoDB {
@@ -161,7 +164,8 @@ export class DynamoDB {
       functionName: lambdaId,
       environment: {
         TABLE_NAME: this.props.tableName,
-        PRIMARY_KEY: this.props.primaryKey
+        PRIMARY_KEY: this.props.primaryKey,
+        BUCKET_NAME: this.props.environment!.s3
       }
     });
   }

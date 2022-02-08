@@ -6,6 +6,9 @@ export function validateCreateAuction(arg: any) {
   if (!(arg as Auction).title) {
     throw new MissingFieldError(`Value for title required! Got: ${JSON.stringify(arg)}`);
   }
+  if (!(arg as Auction).image) {
+    throw new MissingFieldError(`Value for image required! Got: ${JSON.stringify(arg)}`);
+  }
   if (!(arg as Auction).seller) {
     throw new MissingFieldError(`Value for seller required! Got: ${JSON.stringify(arg)}`);
   }

@@ -1,4 +1,4 @@
-import { Fn, Stack } from 'aws-cdk-lib';
+import { Fn, Stack, aws_s3 as s3 } from 'aws-cdk-lib';
 import { AuthorizationType, CognitoUserPoolsAuthorizer, MethodOptions } from 'aws-cdk-lib/aws-apigateway';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
@@ -21,11 +21,18 @@ export class AuctionStack extends Stack {
       cognitoUserPools: [userPool],
       identitySource: 'method.request.header.Authorization'
     });
+    const authorizerAuctionOptions: MethodOptions = {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: authorizer.authorizerId
+      }
+    };
 
-    const mailerLambda = NodejsFunction.fromFunctionArn(this, 'MailerAuctionId',
-      Fn.importValue(`MailerLambdaArn-${props.stageName}`).toString()
-    );
-
+    const auctionBucket = new s3.Bucket(this, `AuctionBucket-${props.stageName}`, {
+      bucketName: `AuctionBucket-${props.stageName}`,
+      accessControl: s3.BucketAccessControl.PUBLIC_READ,
+      publicReadAccess: true,
+    });
     const auctionTable = new DynamoDB(
       this,
       {
@@ -36,17 +43,12 @@ export class AuctionStack extends Stack {
         updateLambdaPath: 'update',
         deleteLambdaPath: 'delete',
         patchLambdaPath: 'bid',
-        secondaryIndexes: [{ partition: 'status' }, { partition: 'status', sort: 'endTime' }]
+        secondaryIndexes: [{ partition: 'status' }, { partition: 'status', sort: 'endTime' }],
+        environment: {
+          s3: auctionBucket.bucketName
+        }
       }
     );
-
-    const authorizerAuctionOptions: MethodOptions = {
-      authorizationType: AuthorizationType.COGNITO,
-      authorizer: {
-        authorizerId: authorizer.authorizerId
-      }
-    };
-
     new Auction(this, {
       auctionTable,
       authorizer,
@@ -55,6 +57,9 @@ export class AuctionStack extends Stack {
       emailSender: props.emailSender,
     });
 
+    const mailerLambda = NodejsFunction.fromFunctionArn(this, 'MailerAuctionId',
+      Fn.importValue(`MailerLambdaArn-${props.stageName}`).toString()
+    );
     const closeAuctionLambda = new NodejsFunction(this, `CloseAuctionLambda-${props.stageName}`, {
       entry: join(__dirname, '..', 'resources', 'auction', 'close.ts'),
       handler: 'handler',
