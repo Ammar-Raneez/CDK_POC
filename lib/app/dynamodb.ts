@@ -1,6 +1,7 @@
 import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { join } from 'path';
 
@@ -19,7 +20,10 @@ interface TableProps {
   deleteLambdaPath?: string;
   secondaryIndexes?: GSI[];
   environment?: {
-    s3: string;
+    s3: {
+      bucket: Bucket;
+      bucketName: string;
+    }
   };
 }
 
@@ -130,6 +134,7 @@ export class DynamoDB {
   private grantDynamoDBRights() {
     if (this.createLambda) {
       this.table.grantWriteData(this.createLambda);
+      this.props.environment?.s3.bucket.grantWrite(this.createLambda);
     }
 
     if (this.readLambda) {
@@ -165,7 +170,7 @@ export class DynamoDB {
       environment: {
         TABLE_NAME: this.props.tableName,
         PRIMARY_KEY: this.props.primaryKey,
-        BUCKET_NAME: this.props.environment!.s3
+        BUCKET_NAME: this.props.environment!.s3.bucketName
       }
     });
   }

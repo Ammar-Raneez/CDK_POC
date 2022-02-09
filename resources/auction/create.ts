@@ -31,7 +31,6 @@ async function handler(
 
   try {
     const item = getEventBody(event);
-    console.log('Item: ', JSON.stringify(item));
     const currentTime = new Date();
     const endTime = new Date();
     endTime.setHours(currentTime.getHours() + 1);

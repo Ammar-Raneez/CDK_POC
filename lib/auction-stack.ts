@@ -1,7 +1,8 @@
-import { Fn, Stack, aws_s3 as s3 } from 'aws-cdk-lib';
+import { Fn, Stack } from 'aws-cdk-lib';
 import { AuthorizationType, CognitoUserPoolsAuthorizer, MethodOptions } from 'aws-cdk-lib/aws-apigateway';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { Bucket, BucketAccessControl } from 'aws-cdk-lib/aws-s3';
 import { StateMachine, Succeed } from 'aws-cdk-lib/aws-stepfunctions';
 import { LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
@@ -28,11 +29,12 @@ export class AuctionStack extends Stack {
       }
     };
 
-    // const auctionBucket = new s3.Bucket(this, `AuctionBucket-${props.stageName}`, {
-    //   bucketName: `auction-bucket-${props.stageName}`,
-    //   accessControl: s3.BucketAccessControl.PUBLIC_READ,
-    //   publicReadAccess: true,
-    // });
+    const auctionBucket = new Bucket(this, `AuctionBucket-${props.stageName}`, {
+      bucketName: `auction-bucket-${props.stageName}`,
+      accessControl: BucketAccessControl.PUBLIC_READ,
+      publicReadAccess: true,
+    });
+    auctionBucket.grantPublicAccess();
     const auctionTable = new DynamoDB(
       this,
       {
@@ -44,9 +46,12 @@ export class AuctionStack extends Stack {
         deleteLambdaPath: 'delete',
         patchLambdaPath: 'bid',
         secondaryIndexes: [{ partition: 'status' }, { partition: 'status', sort: 'endTime' }],
-        // environment: {
-        //   s3: auctionBucket.bucketName
-        // }
+        environment: {
+          s3: {
+            bucket: auctionBucket,
+            bucketName: auctionBucket.bucketName
+          }
+        }
       }
     );
     new Auction(this, {
