@@ -28,11 +28,11 @@ export class AuctionStack extends Stack {
       }
     };
 
-    const auctionBucket = new s3.Bucket(this, `AuctionBucket-${props.stageName}`, {
-      bucketName: `auction-bucket-${props.stageName}`,
-      accessControl: s3.BucketAccessControl.PUBLIC_READ,
-      publicReadAccess: true,
-    });
+    // const auctionBucket = new s3.Bucket(this, `AuctionBucket-${props.stageName}`, {
+    //   bucketName: `auction-bucket-${props.stageName}`,
+    //   accessControl: s3.BucketAccessControl.PUBLIC_READ,
+    //   publicReadAccess: true,
+    // });
     const auctionTable = new DynamoDB(
       this,
       {
@@ -44,9 +44,9 @@ export class AuctionStack extends Stack {
         deleteLambdaPath: 'delete',
         patchLambdaPath: 'bid',
         secondaryIndexes: [{ partition: 'status' }, { partition: 'status', sort: 'endTime' }],
-        environment: {
-          s3: auctionBucket.bucketName
-        }
+        // environment: {
+        //   s3: auctionBucket.bucketName
+        // }
       }
     );
     new Auction(this, {
